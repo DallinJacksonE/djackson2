@@ -1,0 +1,113 @@
+/* Container acts as the white "card" surface resting on your off-white background */
+.container {
+  background-color: var(--color-surface, #FFFFFF);
+  border-radius: 12px;
+  padding: 3rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  max-width: 900px;
+  margin: 2rem auto;
+}
+
+/* Main Project Title */
+.container h1 {
+  color: var(--color-text-primary, #0F172A);
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-bg, #F8FAFC);
+}
+
+/* Markdown Content Styling */
+.content {
+  color: var(--color-text-primary, #0F172A);
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+/* Markdown Headings */
+.content h2 {
+  font-size: 1.75rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.content h3 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Paragraphs and Lists */
+.content p {
+  margin-bottom: 1.5rem;
+}
+
+.content ul, 
+.content ol {
+  margin-bottom: 1.5rem;
+  padding-left: 2rem;
+}
+
+.content li {
+  margin-bottom: 0.5rem;
+}
+
+/* Links */
+.content a {
+  color: var(--color-accent, #3B82F6);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.content a:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+/* Inline Code Snippets */
+.content code {
+  font-family: 'JetBrains Mono', monospace;
+  background-color: var(--color-bg, #F8FAFC);
+  color: var(--color-accent, #3B82F6);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* Large Code Blocks */
+.content pre {
+  background-color: var(--color-text-primary, #0F172A); /* Dark background for high contrast */
+  color: var(--color-surface, #FFFFFF);
+  padding: 1.5rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 2rem 0;
+}
+
+/* Reset inline code styles when inside a pre block */
+.content pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: 0.95em;
+}
+
+/* Blockquotes */
+.content blockquote {
+  border-left: 4px solid var(--color-accent, #3B82F6);
+  background-color: var(--color-bg, #F8FAFC);
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: var(--color-text-secondary, #64748B);
+}
+
+/* Images inside MDX */
+.content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 2rem 0;
+}

@@ -1,0 +1,19 @@
+export const meta = {
+  title: "Robot Sandbox",
+  description: "A robotic simulator for reinforced learning.",
+  tags: ["Python", "Pygame", "Robotics", "RL"],
+  date: "2024-06-13"
+};
+
+import robotSimulator from '../../assets/images/robotSim/robotSimulator.png'
+
+
+## Human Robot Teamwork
+
+There is a team in my research lab that is working on studying robot-human cooperation. AI can struggle with understanding its limits and having it learn when to ask for human help is a challenge. In this study, we wanted to train a model that would play a block moving game. The goal of this game is to get the blocks set up into a 3x3 grid with the colors and shapes in the correct locations. I was able to see a need for a new simulator for quickly testing new model implementations. This model ran in Python using the PyGame library. The user is able to click and drag the blocks to help the bot as it asks for help. The generators that the bot is using to interact with the world are visible, and the user can toggle the different types of parameters that the bot is calculating on startup. This tool proved to be effective and helped the students doing the research implement their code quicker.
+
+## A New Simulator
+
+I joined the team to build a simulator for the robot. With a simulator it is easier, faster, and safer to experiment with reinforced leanring. They needed the simulator to mimic the enviornment that they were looking into. I built the simulator using pygame, a python library for building games. The robot needed to setup up a table with blocks in a certain configuration. In real life, actions the real robot would take would sometimes fail due to noise in the sensors, so this was a part of the simulator by implementing a random chance of the robot action failing. This non deterministic enviornment meant that the robot would attempt to set up the table, and upon finding a state which it couldn't win with, would ask for help. This simulator allowed a human to help by clicking and dragging the blocks.
+
+<img src={robotSimulator} alt="Robot Simulator"></img>

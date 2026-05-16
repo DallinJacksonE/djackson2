@@ -1,0 +1,136 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.heading {
+  color: var(--color-primary-text);
+  margin-bottom: 0.5rem;
+}
+
+.subtext {
+  color: var(--color-secondary-text);
+  font-size: 1.125rem;
+  margin-bottom: 3rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  background-color: var(--color-surface);
+  border-radius: 8px;
+  padding: 2rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  display: block; /* Forces the Link to behave like a standard block container */
+  text-decoration: none; /* Removes the default link underline */
+  color: inherit; /* Prevents the text from turning the default link-blue */
+  cursor: pointer; /* Ensures the mouse turns into a pointer */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  transition: color 0.2s ease; /* Makes the color swap smooth rather than instant */
+  font-size: 2.5rem;
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.cardTitle {
+  color: var(--color-text-primary);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.card:hover .cardTitle {
+  color: var(--color-accent);
+}
+
+.cardDescription {
+  color: var(--color-text-secondary);
+  margin-bottom: 0.5rem;
+  flex-grow: 1;
+  line-height: 1.6;
+}
+
+.date {
+  font-size: 0.875rem; 
+  color: var(--color-text-secondary);
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+
+.tagWrapper {
+  overflow: hidden;
+  width: 100%;
+  white-space: nowrap;
+  /* Adds a smooth fade effect to the left and right edges */
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+
+.tagContainer {
+  display: inline-flex;
+  gap: 0.5rem;
+  /* Load the animation, but explicitly tell the browser to hold it still */
+  animation: scrollTags 15s linear infinite;
+  animation-play-state: paused;
+}
+
+/* When the user hovers anywhere over the parent .card, pull the brakes off */
+.card:hover .tagContainer {
+  animation-play-state: running;
+}
+
+@keyframes scrollTags {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Translates exactly half the width to create a seamless loop */
+    transform: translateX(-50%); 
+  }
+}
+
+.tag {
+  background-color: var(--color-bg);
+  color: var(--color-accent);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  margin:0.1rem;
+}
+
+.link {
+  color: var(--color-accent, #3B82F6);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+  margin-top: auto;
+}
+
+.link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
