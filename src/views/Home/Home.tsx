@@ -30,10 +30,9 @@ const Home = () => {
       </div>
 
       <div className={styles.imageWrapper}>
-        <div className={styles.angledFrame}>
-          {/* Replace the placeholder div below with your actual  once ready */}
+        <Link to="/about" className={styles.angledFrame}>
           <img src={heroImage} alt="Dallin Jackson" />
-        </div>
+        </Link>
       </div>
     </section>
   );
