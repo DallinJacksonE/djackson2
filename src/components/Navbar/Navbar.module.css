@@ -1,6 +1,6 @@
 .navbar {
   background-color: var(--color-bg); 
-  border-bottom: 1px solid #1E293B; 
+  border-bottom: 1px solid var(--color-border); /* Swapped to semantic variable for theme sync */
   padding: 1rem 2rem;
   position: sticky;
   top: 0;
@@ -13,6 +13,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative; /* Crucial for absolute positioning of mobile menu */
 }
 
 .brandLink {
@@ -26,6 +27,21 @@
 
 .brandLink:hover {
   color: var(--color-accent); 
+}
+
+/* Hamburger Icon Styling (Hidden on Desktop) */
+.hamburger {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--color-text-primary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.hamburger:hover {
+  color: var(--color-accent);
 }
 
 .navLinks {
@@ -76,4 +92,38 @@
   color: var(--color-accent);
   background-color: var(--color-border);
   transform: translateY(-1px);
+}
+
+/* --- Mobile Responsive Rules --- */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem; /* Slightly smaller padding for mobile */
+  }
+
+  .hamburger {
+    display: flex; /* Show the hamburger button */
+  }
+
+  .navLinks {
+    display: none; /* Hide standard flex row */
+    position: absolute;
+    top: 100%; /* Push menu directly beneath the navbar */
+    left: 0;
+    width: 100%;
+    background-color: var(--color-bg);
+    flex-direction: column;
+    padding: 1.5rem 0;
+    gap: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Adds a subtle drop shadow to the dropdown */
+  }
+
+  /* The class appended when state is true */
+  .navLinks.mobileOpen {
+    display: flex;
+  }
+
+  .themeToggle {
+    margin-left: 0; /* Center the toggle with the rest of the links */
+  }
 }

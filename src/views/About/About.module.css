@@ -233,3 +233,10 @@
   font-family: 'JetBrains Mono', monospace; /* Nods to the dev aesthetic */
   font-size: 0.9rem;
 }
+
+/* --- Mobile Responsive Rules --- */
+@media (max-width: 768px) {
+  .carouselSection {
+    display: none;
+  }
+}
