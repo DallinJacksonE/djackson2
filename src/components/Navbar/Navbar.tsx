@@ -18,7 +18,7 @@ const Navbar = () => {
         {/* Logo / Home Link */}
         <div className={styles.brand}>
           <NavLink to="/" className={styles.brandLink} onClick={closeMenu}>
-            d_jackson
+            djackson_
           </NavLink>
         </div>
 

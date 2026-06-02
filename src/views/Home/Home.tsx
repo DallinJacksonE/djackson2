@@ -26,6 +26,15 @@ const Home = () => {
           <Link to="/about" className={styles.secondaryButton}>
             More About Me
           </Link>
+          <a
+            href="https://blog.djackson.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.subtleLink}
+          >
+            View my blog &rarr;
+          </a>
+
         </div>
       </div>
 
