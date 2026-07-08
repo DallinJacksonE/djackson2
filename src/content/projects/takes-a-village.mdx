@@ -1,24 +1,39 @@
 export const meta = {
-  title: 'Takes A Village',
-  date: '2026-05-16',
-  description: 'A social dilemma game about specialization, societies, and survival.',
-  tags: ['Docker', 'React', 'TypeScript', 'Node.js', 'MySql', 'Python', 'APIs']
+  title: "Takes A Village",
+  date: "2026-05-16",
+  description:
+    "A social dilemma game about specialization, societies, and survival.",
+  tags: [
+    "Docker",
+    "React",
+    "TypeScript",
+    "Node.js",
+    "MySql",
+    "Python",
+    "APIs",
+    "Websocket",
+  ],
 };
 
-import tav_home from '../../assets/images/takesAVillage/tav-home.png'
-import tav_trade from '../../assets/images/takesAVillage/tav-trade-compose.png'
-import tav_trade_recieve from '../../assets/images/takesAVillage/tav-trade-recieved.png'
-import tav_fire from '../../assets/images/takesAVillage/tav-campfire.png'
+import tav_home from "../../assets/images/takesAVillage/tav-home.png";
+import tav_trade from "../../assets/images/takesAVillage/tav-trade-compose.png";
+import tav_trade_recieve from "../../assets/images/takesAVillage/tav-trade-recieved.png";
+import tav_fire from "../../assets/images/takesAVillage/tav-campfire.png";
+import tav_research_loop from "../../assets/images/takesAVillage/research_dash_training.png";
+import tav_research_game from "../../assets/images/takesAVillage/research_dash_game_view.png";
 
+<img src={tav_research_loop} alt="home page" />
 
 ## It Takes a Village
-In Dr. Jacob Crandall's AI-Human Interaction lab, we are studying insights in social issues, with a focus on poverty and lonliness. We have a few different games that we use to showcase these human behaviors. Training AI bots to play these games themselves also reveals interesting social strategies that solve or contribute to the social issue in mind. It Takes a Village is one of these games trying to answer the relationship between behaviors of agents that must cooperate, bargin, and forgive in order to survive. 
 
-* [GitHub Repository](https://github.com/DallinJacksonE/takesAVillage)
+In Dr. Jacob Crandall's AI-Human Interaction lab, we are studying insights in social issues, with a focus on poverty and lonliness. We have a few different games that we use to showcase these human behaviors. Training AI bots to play these games themselves also reveals interesting social strategies that solve or contribute to the social issue in mind. It Takes a Village is one of these games trying to answer the relationship between behaviors of agents that must cooperate, bargin, and forgive in order to survive.
+
+- [GitHub Repository](https://github.com/DallinJacksonE/takesAVillage)
 
 ---
 
 ## Tech Stack
+
 ### Frontend
 
 A React application build with TypeScript and Vite.
@@ -27,30 +42,31 @@ A React application build with TypeScript and Vite.
 - **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
 - **Vite**: A build tool that aims to provide a faster and leaner development experience for modern web projects.
 - **React Router**: For declarative routing in the application.
-- **Socket.IO Client**: For real-time communication with the backend service.
 
 ### Backend
 
 - **Python**: A high-level, general-purpose programming language.
-- **Flask**: A lightweight WSGI web application framework.
-- **Flask-SocketIO**: Provides Socket.IO integration for Flask applications, enabling real-time, bidirectional communication between web clients and servers.
-- **Eventlet**: A concurrent networking library for Python that allows you to change how you run your code, not how you write it. It is used here as a web server for Flask-SocketIO.
+- **FastAPI**: A lightweight web application framework.
 - **MySQL Connector/Python**: A driver for connecting Python programs to MySQL databases.
 
 ---
 
 ## Challenges
+
 This has proven to be one of the biggest projects I have spearheaded. It has a complex state that must be sent to each player, many api calls and websocket messages that need to be sent between the server and the frontend, and it needed to be easily deployable. The complexity of the game with the variety of user actions led to a messy and convoluted game object.
 
 > "The primary hurdle was ensuring the application remained expandable and scalable while enforcing the game state rules."
 
 ## The Solution
-The solutions to this were to use a few software design patterns. 
+
+The solutions to this were to use a few software design patterns.
 
 ### Model-View-Presenter
+
 This project is structured using the Model-View-Presenter (MVP) architectural pattern. MVP is a derivative of the Model-View-Controller (MVC) pattern, but with a few key differences that can make it more suitable for complex user interfaces.
 
 #### What is MVP?
+
 MVP is an architectural pattern that separates the concerns of an application into three interconnected components:
 
 - Model: The Model is responsible for the application's data and business logic. It has no direct knowledge of the user interface. In this project, the service directory contains the code that interacts with the backend API, acting as our Model. It fetches and pushes data to and from the server.
@@ -60,13 +76,14 @@ MVP is an architectural pattern that separates the concerns of an application in
 - Presenter: The Presenter acts as the "middle-man" between the Model and the View. It retrieves data from the Model and formats it for display in the View. It also reacts to user input from the View and updates the Model. The Presenter is the main hub of user interaction logic. Our presenters directory contains these classes.
 
 #### Why MVP?
+
 - Separation of Concerns: MVP provides a clean separation between the user interface (View) and the application's logic (Presenter) and data (Model). This makes the code easier to understand, maintain, and test.
 - Testability: Because the Presenter is decoupled from the View, we can write unit tests for the Presenter and Model without needing to interact with the UI. This makes our tests faster and more reliable.
 - Flexibility: With MVP, the same Presenter and Model can be used with different Views, allowing for easier UI changes without affecting the underlying business logic.
 
-
 ### Command Pattern
-To simplify the backend we changed the game logic from if/else trees to use the Command Pattern. When the game was sent a websocket packet with a user action, it would forward it to an ActionDispatcher. The Dispatcher would build the user action from the websocket data then call ```execute()``` on the object. Since all user actions implemented this ```execute()``` function, we were able to store all the game logic for those actions within their own class rather than have all the logic under a single if/else tree.
+
+To simplify the backend we changed the game logic from if/else trees to use the Command Pattern. When the game was sent a websocket packet with a user action, it would forward it to an ActionDispatcher. The Dispatcher would build the user action from the websocket data then call `execute()` on the object. Since all user actions implemented this `execute()` function, we were able to store all the game logic for those actions within their own class rather than have all the logic under a single if/else tree.
 
 ```python
 if action_command in ActionDispatcher.COMMAND_MAP:
@@ -83,3 +100,4 @@ We now have a working implementation of the game. Below are some pictures of the
 <img src={tav_trade} alt="home page" />
 <img src={tav_trade_recieve} alt="home page" />
 <img src={tav_fire} alt="home page" />
+<img src={tav_research_game} alt="home page" />
