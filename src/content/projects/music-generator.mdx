@@ -1,27 +1,31 @@
 export const meta = {
-  title: 'Music Generator',
-  date: '2026-04-20',
-  description: 'Using Transformer Models to generate MIDI music files',
-  tags: ['Python', 'PyTorch', 'Deep Learning', 'Data Science', 'Kaggle']
+  title: "Music Generator",
+  date: "2026-04-20",
+  description: "Building a Transformer Model to generate MIDI music files",
+  tags: ["Python", "PyTorch", "Deep Learning", "Data Science", "Kaggle"],
 };
 
 ## Overview
+
 Final project for CS 474 Deep Learning at BYU. I chose to build a Music Generator that would output a MIDI file given a desired genre.
 
-* [GitHub Repository](https://github.com/DallinJacksonE/MusicGenerator)
+- [GitHub Repository](https://github.com/DallinJacksonE/MusicGenerator)
 
 ## Problem to Solve
+
 I wanted to build a music stream generator. I first saw one from 65daysofstatic, they are the artist that did the soundtrack for No Man’s Sky. The stream was really cool to listen to live since it was the same orchestral punky techno sound as their own music. I looked for other music streams and saw that they were all mostly LoFi, so I figured I could try to make a music stream generator that would take a base genre of music, and then the model could add another couple genres on top to generate a mix of the genres. I don’t have much experience making music.
 
-This is a mix of Regression and Classification. The model I built predicts a continuous number for the volume of the note as well as the length of the note using regression and MSE. The model is also using classification to select the note and the instrument being used. This uses CEL. The losses are added together to give the total loss. 
+This is a mix of Regression and Classification. The model I built predicts a continuous number for the volume of the note as well as the length of the note using regression and MSE. The model is also using classification to select the note and the instrument being used. This uses CEL. The losses are added together to give the total loss.
 
 This is also a Self-supervised model, the data itself is not labeled, and I was trying to get an autoregressive next-token prediction from unlabeled sequences.
 
 ## Exploration
+
 In researching the best approach for generating music, the LSTM was the best approach until around 2020, then the transformer architecture showed that it was a better approach at being able to understand the pattern of music better.
 
 ## Approach
-I began with a model predicting a note’s length, volume, instrument, and pitch based on a 50-note sequence, using pre-training on general music data from  Kaggle followed by genre-specific fine-tuning. Initial training on Google Colab was inefficient, it consumed all my compute hours without getting through all the epochs.
+
+I began with a model predicting a note’s length, volume, instrument, and pitch based on a 50-note sequence, using pre-training on general music data from Kaggle followed by genre-specific fine-tuning. Initial training on Google Colab was inefficient, it consumed all my compute hours without getting through all the epochs.
 
 Transitioning to a local Arch Linux machine with an AMD GPU initially yielded idle loads due to a CPU bottleneck in parsing MIDI files. To resolve this, I developed a preprocessing script that converted over 120,000 MIDI files into Python objects in 20 minutes. By threading the CPU and utilizing the GPU, training time dropped to minutes with improved loss.
 
@@ -30,9 +34,9 @@ Early outputs were funny, featuring 50 instruments playing random notes. I simpl
 The architecture evolved from a four-feature monophonic model to a five-dimensional polyphonic model by adding delta timing (multi note answers for chords). I also reduced the batch size from 1024 to 32 to introduce gradient noise for better generalization.
 
 ## Results
+
 A MIDITransformer Model that uses nn.TransformerEncoder. This architecture maps categorical features, specifically pitch and instrument, via nn.Embedding layers, while continuous variables are processed through linear projections. These representations are subsequently combined with positional encodings to provide the final input for the model.
 
 The final loss for this model is calculated as a combined sum of Cross-Entropy and MSE across all five musical features. This allows the model to optimize for both categorical and continuous predictions simultaneously.
 
 I feel that substantial progress was made. By using a multithreaded tensor preprocessing script, I was able to bypass the standard MIDI parsing bottlenecks. This allowed me to solve the polyphony problem, enabling the model to generate simultaneous chords and successfully output valid .mid files. They don’t sound super great yet but I’m going to continue working at it.
-
