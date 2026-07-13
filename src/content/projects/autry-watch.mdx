@@ -1,0 +1,193 @@
+export const meta = {
+  title: "EMS Casio Watch",
+  date: "2026-07-13",
+  description: "A Casio f-91w for CPR and breathing.",
+  tags: ["C", "Embedded Programming", "Soldering", "Wearable"],
+};
+
+{/*import CustomChart from '../../components/CustomChart/CustomChart';*/}
+import FinishedShot from '../../assets/images/autryWatch/finished_shot.jpg'
+import parts_on_mat from '../../assets/images/autryWatch/parts_on_mat.jpg'
+import face_and_back from '../../assets/images/autryWatch/face_and_back.jpg'
+
+## Overview
+
+<img src={FinishedShot} alt="autry mach 1 watch"></img>
+
+A watch made for my-brother-in-EMS-arms. A glorious CASIO f-91w with two helpful faces for Emergency Medics, a CPR metronome and cycle counter, and a box breathing coach for self and patients.
+
+- [Live Demo](https://youtube.com/shorts/ioNhCHUiQFY)
+
+## Tech Stack
+
+- **C:** The language for embedded programming and low power chips.
+- **Soldering & Small Electronics Work:** Not too crazy, but needed to take old casio components and I had to troubleshoot some issues.
+
+## The Solution & Architecture
+
+This project used Joey Castillo's Sensor Watch Lite chip and the repo he and his community have set up. I wouldn't have been able to build this without their work and making this possible. I did code up a watch face for the CPR metronome in my own copy of the repo, then built and flashed the firmware onto the chip. I used AI tools to help me research the repo and see which functions I could use to implement this chip. It was great to code in C again and think about the limitations the CASIO chip has in the code I was writing.
+
+## Pictures
+
+<img src={parts_on_mat} alt="dissassembled watch"></img>
+<img src={face_and_back} alt="the inner chip and face component"></img>
+
+## The Code
+
+For anyone who would like the code for this face for their own needs:
+
+```C
+/*
+ * MIT License
+ *
+ * Copyright (c) 2026 <#author_name#>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+#include <stdlib.h>
+#include <string.h>
+#include "cpr_face.h"
+
+#define CPR_FACE_MAX_CYCLE_COUNT 99
+#define CPR_FACE_TONE_TICKS 3
+#define CPR_FACE_SHORT_BEAT_REST_TICKS 35
+#define CPR_FACE_LONG_BEAT_REST_TICKS 36
+
+static void cpr_face_draw(cpr_state_t *state) {
+    const char *top;
+    char buf[8];
+
+    watch_clear_display();
+
+    if (state->metronome_running) {
+        watch_set_indicator(WATCH_INDICATOR_SIGNAL);
+        watch_clear_indicator(WATCH_INDICATOR_BELL);
+        top = "ON";
+        sprintf(buf, "CPR %02d", state->cpr_cycle_count);
+    } else {
+        watch_clear_indicator(WATCH_INDICATOR_SIGNAL);
+        watch_clear_indicator(WATCH_INDICATOR_BELL);
+        top = "OF";
+        sprintf(buf, "CPR %02d", state->cpr_cycle_count);
+    }
+
+    watch_display_text_with_fallback(WATCH_POSITION_TOP, top, top);
+    watch_display_text_with_fallback(WATCH_POSITION_BOTTOM, buf, buf);
+}
+
+static bool cpr_face_buzzer_source(uint16_t position, void *userdata, uint16_t *period, uint16_t *duration) {
+    cpr_state_t *state = (cpr_state_t *)userdata;
+
+    if (!state->metronome_running) return true;
+
+    if (position % 2 == 0) {
+        *period = NotePeriods[BUZZER_NOTE_C7];
+        *duration = CPR_FACE_TONE_TICKS;
+    } else {
+        uint8_t beat = (position / 2) % 5;
+        *period = WATCH_BUZZER_PERIOD_REST;
+        *duration = beat < 3 ? CPR_FACE_SHORT_BEAT_REST_TICKS : CPR_FACE_LONG_BEAT_REST_TICKS;
+    }
+
+    return false;
+}
+
+static void cpr_face_start(cpr_state_t *state) {
+    state->metronome_running = true;
+    watch_buzzer_play_raw_source_with_volume(cpr_face_buzzer_source, state, NULL, WATCH_BUZZER_VOLUME_LOUD);
+}
+
+static void cpr_face_stop(cpr_state_t *state) {
+    state->metronome_running = false;
+    watch_buzzer_abort_sequence();
+}
+
+static void cpr_face_toggle(cpr_state_t *state) {
+    if (state->metronome_running) {
+        cpr_face_stop(state);
+    } else {
+        cpr_face_start(state);
+    }
+}
+
+static void cpr_face_increment(cpr_state_t *state) {
+    if (state->cpr_cycle_count >= CPR_FACE_MAX_CYCLE_COUNT) {
+        state->cpr_cycle_count = 0;
+    } else {
+        state->cpr_cycle_count++;
+    }
+}
+
+void cpr_face_setup(uint8_t watch_face_index, void ** context_ptr) {
+    (void) watch_face_index;
+    if (*context_ptr == NULL) {
+        *context_ptr = malloc(sizeof(cpr_state_t));
+        memset(*context_ptr, 0, sizeof(cpr_state_t));
+    }
+}
+
+void cpr_face_activate(void *context) {
+    cpr_state_t *state = (cpr_state_t *)context;
+    state->metronome_running = false;
+    state->cpr_cycle_count = 0;
+}
+
+bool cpr_face_loop(movement_event_t event, void *context) {
+    cpr_state_t *state = (cpr_state_t *)context;
+
+    switch (event.event_type) {
+        case EVENT_ACTIVATE:
+            cpr_face_draw(state);
+            break;
+        case EVENT_LIGHT_BUTTON_DOWN:
+            if (state->metronome_running) cpr_face_start(state);
+            break;
+        case EVENT_LIGHT_BUTTON_UP:
+            cpr_face_increment(state);
+            cpr_face_draw(state);
+            break;
+        case EVENT_LIGHT_LONG_PRESS:
+        case EVENT_LIGHT_LONG_UP:
+            break;
+        case EVENT_ALARM_BUTTON_UP:
+            cpr_face_toggle(state);
+            cpr_face_draw(state);
+            break;
+        case EVENT_TIMEOUT:
+            break;
+        case EVENT_LOW_ENERGY_UPDATE:
+            if (state->metronome_running) movement_request_wake();
+            break;
+        default:
+            return movement_default_loop_handler(event);
+    }
+
+    return true;
+}
+
+void cpr_face_resign(void *context) {
+    cpr_state_t *state = (cpr_state_t *)context;
+
+    state->metronome_running = false;
+    watch_buzzer_abort_sequence();
+    movement_request_tick_frequency(1);
+}
+
+```
