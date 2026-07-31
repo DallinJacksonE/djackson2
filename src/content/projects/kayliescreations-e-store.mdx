@@ -1,0 +1,40 @@
+export const meta = {
+  title: 'kayliescreations.com',
+  description: 'An online retail store for a crochet business.',
+  tags: ['Full-stack', 'DB Design', 'AI-Tools', 'CRUD E-Commerce']
+  
+};
+
+
+* [Live Demo](https://kayliescreations.com)
+* [GitHub Repository](https://github.com/DallinJacksonE/k_suite)
+
+## Tech Stack
+List the primary technologies used and briefly explain *why* you chose them. Employers love to see intentional technical decisions.
+
+* **React & TypeScript:** For building a robust, type-safe user interface.
+* **Vite:** Chosen over Create React App for significantly faster compilation and hot-module replacement.
+* **Custom CSS Modules:** To ensure styles remained completely locally scoped without relying on a heavy UI framework.
+
+
+## The Challenge
+What was the hardest part of building this? Did you have to manage complex state, handle a massive amount of data, or fix a tricky performance bug? 
+
+> "The primary hurdle was ensuring the application remained completely responsive while rendering a highly interactive data grid."
+
+
+## The Solution & Architecture
+Walk through how you solved the challenge. This is the perfect place to drop in a code snippet using your JetBrains Mono typography to show off your clean code style.
+
+```typescript
+// Example of a custom hook used to solve the problem
+const useDataFetcher = (url: string) => {
+  const [data, setData] = useState<any[]>([]);
+  
+  useEffect(() => {
+    // Your brilliant logic here
+  }, [url]);
+
+  return data;
+};
+```
