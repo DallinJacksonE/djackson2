@@ -1,0 +1,35 @@
+export const meta = {
+  title: "3D Tron",
+  date: "2026-08-10",
+  description: "Building a 3D Tron to learn the Odin language",
+  tags: ["Odin", "Raylib", "3D Game", "Application"],
+};
+
+{/*import CustomChart from '../../components/CustomChart/CustomChart';*/}
+
+## Overview
+
+A 3D Tron/lightcycle game where you can jump and throw your disk.
+
+<figure>
+  <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/9pfdO550Xww?si=TAUxjTI6OjyET1X2"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen
+  ></iframe>
+</figure>
+- [GitHub Repository](https://github.com/DallinJacksonE/tron)
+
+## Tech Stack
+
+- **Odin:** Learning Odin to get better at low level programming.
+- **Raylib:** A time-tested graphics library that let me not worry about building a game engine.
+
+## Architecture
+
+I learned a lot from this project. I sat down and coded most of it by hand with the Odin docs pulled up. It was fun to think about cameras and physics and how the game all went together to make a fun playing experience. The game runs in a Raylib window for-loop that updates logic, handles physics, and then draws the game. To clean it up I used CLI-AI tools (Hermes Agent Harness) to help me see how I could improve some structure. Feel free to clone the repo, there is a linux executable in the repo that will let you play it if you don't want to compile it yourself.
