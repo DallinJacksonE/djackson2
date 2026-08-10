@@ -1,40 +1,58 @@
 export const meta = {
-  title: 'kayliescreations.com',
-  description: 'An online retail store for a crochet business.',
-  tags: ['Full-stack', 'DB Design', 'AI-Tools', 'CRUD E-Commerce']
-  
+  title: "kayliescreations.com",
+  date: "2026-07-28",
+  description: "An online retail store for a crochet business.",
+  tags: ["Full-stack", "DB Design", "AI-Tools", "CRUD E-Commerce"],
 };
 
+import kc_home from "../../assets/images/kayliescreations/kc_home.png";
+import kc_product from "../../assets/images/kayliescreations/kc_product_listing.png";
+import kc_cart from "../../assets/images/kayliescreations/kc_cart.png";
+import kc_user from "../../assets/images/kayliescreations/kc_user_page.png";
+import kc_admin from "../../assets/images/kayliescreations/kc_admin.png";
 
-* [Live Demo](https://kayliescreations.com)
-* [GitHub Repository](https://github.com/DallinJacksonE/k_suite)
+<figure>
+  <img src={kc_home} alt="Kaylie's Creations home page" />
+</figure>
+
+- [Live Demo](https://kayliescreations.com)
+- [GitHub Repository](https://github.com/DallinJacksonE/k_suite)
 
 ## Tech Stack
-List the primary technologies used and briefly explain *why* you chose them. Employers love to see intentional technical decisions.
 
-* **React & TypeScript:** For building a robust, type-safe user interface.
-* **Vite:** Chosen over Create React App for significantly faster compilation and hot-module replacement.
-* **Custom CSS Modules:** To ensure styles remained completely locally scoped without relying on a heavy UI framework.
+A website using Node.js, Docker deployments, and self-hosted s3 MinIO bucket.
 
+- **React & TypeScript:** For building the client and admin frontends.
+- **Vite:** Chosen over Create React App for significantly faster compilation and hot-module replacement.
+- **Docker:** Allowed for easy deployment and interfacing between the frontend proxies, the backend, SQL instance, and MinIO bucket.
+- **MinIO:** Can store encrypted PDFs accessible by clients who have purchased them, and stores the images uploaded by the admin for shop listings.
 
-## The Challenge
-What was the hardest part of building this? Did you have to manage complex state, handle a massive amount of data, or fix a tricky performance bug? 
+## kayliescreations.com
 
-> "The primary hurdle was ensuring the application remained completely responsive while rendering a highly interactive data grid."
+Kaylie is my sister, and she does a great job with her business of making crochet plushies and patterns for those plushies. She has a lot of people at markets who like her stuff, but want to buy something later, for a birthday or holiday gift. Having an e-commerce site was something that we decided to build together. She is studying UI/UX at BYU, and this is right up her alley. She made the wireframe and prototype for the website, and I implemented it along with a functional backend that would support her needs. There are 60 endpoints that support those needs, from adding shop listings to accessing purchased PDFs, the website is a Full-stack, run in house website that does all you would expect it to.
 
+## Architecture
 
-## The Solution & Architecture
-Walk through how you solved the challenge. This is the perfect place to drop in a code snippet using your JetBrains Mono typography to show off your clean code style.
+There are five services that work together, two proxies that serve a client frontend and an admin frontend, a MySQL instance and a MinIo bucket, and the backend that handles the API calls. A client can access the website and purchase plushies as a guest. To purchase PDF patterns users must make an account to retain access to those PDFs, which are served by generated pre signed URLs that give the clients access to the encrypted PDFs in the MinIO bucket. The admin frontend allows the business owner to update the shop content, write and publish blog articles and collections, add Market dates to the calendar, and see incoming orders that need to be fulfilled. The payments are passed through Square's API for security.
 
-```typescript
-// Example of a custom hook used to solve the problem
-const useDataFetcher = (url: string) => {
-  const [data, setData] = useState<any[]>([]);
-  
-  useEffect(() => {
-    // Your brilliant logic here
-  }, [url]);
+## Photos
 
-  return data;
-};
-```
+<figure>
+  <img src={kc_product} alt="Kaylie's Creations product listing page" />
+  <figcaption>Product listing caption.</figcaption>
+</figure>
+
+<figure>
+  <img src={kc_cart} alt="Kaylie's Creations cart page" />
+  <figcaption>Cart page caption.</figcaption>
+</figure>
+
+<figure>
+  <img src={kc_user} alt="Kaylie's Creations user account page" />
+  <figcaption>User account page caption.</figcaption>
+</figure>
+
+<figure>
+  <img src={kc_admin} alt="Kaylie's Creations admin page" />
+  <figcaption>Admin page caption.</figcaption>
+</figure>
